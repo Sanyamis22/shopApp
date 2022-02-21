@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 
@@ -20,11 +21,16 @@ const CategoryList = ({route, navigation}) => {
 
   const dispatch = useDispatch();
 
-  const CategoryList = useSelector(state => state.CategoryList);
+  const {products, isFetching} = useSelector(state => state.CategoryList);
+  console.log('CategoryList==>', CategoryList);
 
   useEffect(() => {
     dispatch(fetchCategoryListAction(categoryName));
   }, []);
+
+  const _renderLoader = () =>
+    isFetching ? <ActivityIndicator size="large" color="#333" /> : null;
+    
   const _renderHeader = () => (
     <View>
       <Text style={styles.heading}> {categoryName} </Text>
@@ -32,43 +38,41 @@ const CategoryList = ({route, navigation}) => {
   );
   const _renderProductItem = ({item}) => {
     return (
-      <View style={styles.Container2} >
-        
-        <View >
-        <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Image
-            resizeMode={'center'}
-            style={styles.img}
-            source={{uri: item.image}}
-          />
+      <View style={styles.Container2}>
+        <View>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('ProductDetails', {
+                id: item.id,
+              })
+            }>
+            <Image
+              resizeMode={'center'}
+              style={styles.img}
+              source={{uri: item.image}}
+            />
           </Pressable>
 
           <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Text numberOfLines={3} style={styles.title}>
-            {item.title}
-          </Text>
+            onPress={() =>
+              navigation.navigate('ProductDetails', {
+                id: item.id,
+              })
+            }>
+            <Text numberOfLines={3} style={styles.title}>
+              {item.title}
+            </Text>
           </Pressable>
 
-
           <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Text numberOfLines={2} style={styles.desc}>
-            {item.description}
-          </Text>
+            onPress={() =>
+              navigation.navigate('ProductDetails', {
+                id: item.id,
+              })
+            }>
+            <Text numberOfLines={2} style={styles.desc}>
+              {item.description}
+            </Text>
           </Pressable>
 
           <Pressable
@@ -89,21 +93,19 @@ const CategoryList = ({route, navigation}) => {
     );
   };
   return (
-    
     <View style={styles.Container}>
       <View style={styles.productContainer}>
         <FlatList
-          data={CategoryList}
+          data={products}
           numColumns={2}
           renderItem={_renderProductItem}
           keyExtractor={item => item.id}
-          //ListFooterComponent={_renderLoader}
+          ListFooterComponent={_renderLoader}
           ListHeaderComponent={_renderHeader}
           // initialNumToRender={10}
         />
       </View>
-      </View>
-    
+    </View>
   );
 };
 
@@ -144,28 +146,27 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   productContainer: {
-     paddingTop: 20,
-     marginBottom: 20,
-     //flex:1,
-     //backgroundColor: 'red',
+    paddingTop: 20,
+    marginBottom: 20,
+    //flex:1,
+    //backgroundColor: 'red',
   },
   Container2: {
-   flex: 2,
+    flex: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
-     alignItems: 'flex-start',
-     backgroundColor: 'white',
-     padding: 10,
-     flexDirection: 'column',
-  //   //flex : 1,
+    alignItems: 'flex-start',
+    backgroundColor: 'white',
+    padding: 10,
+    flexDirection: 'column',
+    //   //flex : 1,
     alignItems: 'center',
-     justifyContent: 'center',
-     margin: 4,
+    justifyContent: 'center',
+    margin: 4,
     borderRadius: 10,
     paddingTop: 10,
-    
   },
   Container: {
-    flex:1,
-  }
+    flex: 1,
+  },
 });
