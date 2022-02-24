@@ -7,22 +7,21 @@ import {
   Pressable,
   ActivityIndicator,
   TouchableOpacity,
-  
 } from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {fetchProducts} from '../redux/actions/productAction';
 import {fetchCategoryAction} from '../redux/actions/productCategorieAction';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import ProductsCard from '../components/molecule/ProductsCard';
 //import {fetchCategoryList} from '../redux/actions/CategoryListAction';
-
 
 const Product = ({navigation}) => {
   const dispatch = useDispatch();
   const {products, isFetching} = useSelector(state => state.products);
   const categories = useSelector(state => state.ProductCategories);
   //const categoryType = useSelector(state => state.CategoryList)
-  
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -31,17 +30,21 @@ const Product = ({navigation}) => {
   }, []);
 
   const _renderCategoryItem = ({item}) => {
-   //console.log('data => ', data)
+    //console.log('data => ', data)
     return (
       <View style={styles.mainContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('CategoryList',{
-        categoryName: item
-       // categoryType : item
-      })}>
-        <Image style={styles.story} source={require('./../assets/tv.png')} />
-        <View style={styles.categoriesContainer}>
-          <Text>{item}</Text>
-        </View>
+       
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CategoryList', {
+              categoryName: item,
+              // categoryType : item
+            })
+          }>
+          <Image style={styles.story} source={require('./../assets/tv.png')} />
+          <View style={styles.categoriesContainer}>
+            <Text>{item}</Text>
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -51,13 +54,19 @@ const Product = ({navigation}) => {
     isFetching ? <ActivityIndicator size="large" color="#333" /> : null;
   const _renderHeader = () => (
     <View>
+    
+      <View style={styles.addedCart}>
       <Text style={styles.heading}> Categories </Text>
+      <Image style={styles.bag} source={require('./../assets/bag.png')} />
+      </View>
+      
       <FlatList
         horizontal
         pagingEnabled={false}
         showsHorizontalScrollIndicator={false}
         data={categories}
         renderItem={_renderCategoryItem}
+
         keyExtractor={data => data}
       />
       <Text style={styles.heading}> Product </Text>
@@ -65,54 +74,7 @@ const Product = ({navigation}) => {
   );
 
   const _renderProductItem = ({item}) => {
-    return (
-      <View style={styles.Container2}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Image
-            resizeMode={'center'}
-            style={styles.img}
-            source={{uri: item.image}}
-          />
-        </Pressable>
-
-        <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Text numberOfLines={3} style={styles.title}>
-            {item.title}
-          </Text>
-        </Pressable>
-
-        <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }>
-          <Text numberOfLines={2} style={styles.desc}>
-            {item.description}
-          </Text>
-        </Pressable>
-
-        <Pressable
-          onPress={() =>
-            navigation.navigate('ProductDetails', {
-              id: item.id,
-            })
-          }
-          style={{color: '#000'}}>
-          <Text> View Details </Text>
-        </Pressable>
-      </View>
-    );
+    return <ProductsCard navigation={navigation} item={item} />;
   };
 
   return (
@@ -132,7 +94,7 @@ const Product = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   mainContainer: {
     fontSize: 20,
     padding: 10,
@@ -140,9 +102,9 @@ const styles = StyleSheet.create({
 
   img: {
     width: 140,
-    height: 240,
-    marginBottom: 5,
-    resizeMode: 'center',
+    height: 140,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   productContainer: {
     paddingTop: 20,
@@ -152,12 +114,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 6,
     fontSize: 16,
-    color: 'black',
-    padding: 10,
+    color: 'extraDark',
   },
   desc: {
-    color: '#a1a1a1',
-    marginBottom: 5,
+    color: '$Dark',
+    marginBottom: 6,
     fontSize: 13,
   },
   categoriesContainer: {
@@ -168,13 +129,14 @@ const styles = StyleSheet.create({
   },
   Container: {
     flex: 1,
+    backgroundColor: '$light',
   },
   heading: {
     fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'left',
     marginTop: 20,
-    color: 'black',
+    color: '$extraDark',
   },
   story: {
     height: 110,
@@ -201,16 +163,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: '$lightDark',
     padding: 10,
     flexDirection: 'column',
-    //flex : 1,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 4,
     borderRadius: 10,
-    paddingTop: 10,
+    paddingTop: 20,
   },
+  viewDetails: {
+    color: '$light',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  viewBttn: {
+    padding: 10,
+    backgroundColor: '$extraDark',
+    borderRadius: 10,
+    width: '100%',
+    marginVertical: 10,
+  },
+  bag : {
+    width: 45,
+    height: 45,
+    marginTop : 1,
+    marginLeft : 180,
+  },
+  addedCart: {
+    flexDirection :'row',
+  }
 });
 
 export default Product;

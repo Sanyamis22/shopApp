@@ -7,10 +7,14 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductDetailsAction} from '../redux/actions/ProductDetailAction';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Button from '../components/atom/button/Button';
+
 
 const ProductDetails = ({route, navigation}) => {
   const {id} = route.params;
@@ -20,19 +24,26 @@ const ProductDetails = ({route, navigation}) => {
   const {productDetails, isFetching} = useSelector(
     state => state.ProductDetails,
   );
-  
 
   useEffect(() => {
     dispatch(fetchProductDetailsAction(id));
   }, []);
 
+  const handleButtonAlert =() => {
+    Alert.alert(
+    " ADDED TO CART"
+    );
+  };
+ const handleButtonPress = () => {
+   navigation.goBack()
+ }
   return (
     <View style={styles.Container}>
       <View>
         <Text style={styles.heading}> PRODUCT DETAILS</Text>
       </View>
-     { isFetching ? <ActivityIndicator size="large" color="#333" /> : null}
-      <ScrollView>
+      {isFetching ? <ActivityIndicator size="large" color="#333" /> : null}
+      <ScrollView style={styles.container2}>
         <Image
           resizeMode={'center'}
           style={styles.img}
@@ -42,11 +53,8 @@ const ProductDetails = ({route, navigation}) => {
         <Text style={styles.title}>{productDetails.title}</Text>
 
         <Text style={styles.desc}>{productDetails.description}</Text>
-        <TouchableOpacity onPress={() => navigation.goBack('Product')}>
-          <View style={styles.button}>
-            <Text style={styles.text}> Back </Text>
-          </View>
-        </TouchableOpacity>
+        <Button text="ADD TO CART" onPress={handleButtonAlert}/>
+        <Button text="BACK" onPress={handleButtonPress}/>
       </ScrollView>
     </View>
   );
@@ -54,11 +62,10 @@ const ProductDetails = ({route, navigation}) => {
 
 export default ProductDetails;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   Container: {
     flex: 1,
-    font: 20,
-    color: 'black',
+    backgroundColor: '$light',
   },
   img: {
     width: 300,
@@ -70,28 +77,28 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 35,
-    color: 'black',
+    color: '$extraDark',
     alignContent: 'center',
     padding: 20,
     fontWeight: 'bold',
   },
   title: {
     fontSize: 30,
-    color: 'black',
+    color: '$extraDark',
     padding: 20,
+    textAlign: 'center',
   },
   desc: {
     fontSize: 20,
     alignSelf: 'center',
-    color: 'black',
+    color: '$Dark',
+    textAlign: 'center',
   },
   text: {
     fontSize: 30,
     alignSelf: 'center',
     padding: 20,
-    color: 'black',
+    color: '$extraDark',
   },
-  button: {
-    backgroundcolor: 'red',
-  },
+  container2: {},
 });
