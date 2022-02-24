@@ -12,9 +12,10 @@ import React from 'react';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
-//import {fetchProducts} from '../redux/actions/productAction';
-//import {fetchCategoryAction} from '../redux/actions/productCategorieAction';
+
 import {fetchCategoryListAction} from '../redux/actions/CategoryListAction';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import ProductsCard from '../components/molecule/ProductsCard';
 
 const CategoryList = ({route, navigation}) => {
   const {categoryName} = route.params;
@@ -37,60 +38,9 @@ const CategoryList = ({route, navigation}) => {
     </View>
   );
   const _renderProductItem = ({item}) => {
-    return (
-      <View style={styles.Container2}>
-        <View>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ProductDetails', {
-                id: item.id,
-              })
-            }>
-            <Image
-              resizeMode={'center'}
-              style={styles.img}
-              source={{uri: item.image}}
-            />
-          </Pressable>
-
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ProductDetails', {
-                id: item.id,
-              })
-            }>
-            <Text numberOfLines={3} style={styles.title}>
-              {item.title}
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ProductDetails', {
-                id: item.id,
-              })
-            }>
-            <Text numberOfLines={2} style={styles.desc}>
-              {item.description}
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() =>
-              navigation.navigate('ProductDetails', {
-                id: item.id,
-              })
-            }
-            style={{color: '#000'}}>
-            <Text> View Details </Text>
-          </Pressable>
-        </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Product')}>
-          <Text style={styles.text}> Back </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    return  <ProductsCard navigation={navigation} item={item} />;
+     
+     
   };
   return (
     <View style={styles.Container}>
@@ -102,7 +52,7 @@ const CategoryList = ({route, navigation}) => {
           keyExtractor={item => item.id}
           ListFooterComponent={_renderLoader}
           ListHeaderComponent={_renderHeader}
-          // initialNumToRender={10}
+          
         />
       </View>
     </View>
@@ -111,38 +61,39 @@ const CategoryList = ({route, navigation}) => {
 
 export default CategoryList;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   text: {
     fontSize: 30,
     alignSelf: 'center',
     padding: 20,
-    color: 'black',
+    color: '$extraDark',
   },
   heading: {
     fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'left',
     marginTop: 10,
-    color: 'black',
+    color: '$extraDark',
     paddingBottom: 10,
   },
 
   img: {
     width: 140,
-    height: 240,
-    marginBottom: 5,
-    resizeMode: 'center',
+    height: 140,
+    marginBottom: 10,
+    borderRadius: 10,
+    
   },
   title: {
     fontWeight: 'bold',
     marginBottom: 6,
     fontSize: 16,
-    color: 'black',
-    padding: 10,
+    color: '$extraDark',
+    //padding: 10,
   },
   desc: {
-    color: '#a1a1a1',
-    marginBottom: 5,
+    color: '$Dark',
+    marginBottom: 6,
     fontSize: 13,
   },
   productContainer: {
@@ -156,7 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: '$lightDark',
     padding: 10,
     flexDirection: 'column',
     //   //flex : 1,
@@ -164,9 +115,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 4,
     borderRadius: 10,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   Container: {
     flex: 1,
+    backgroundColor: '$light'
+  },
+  viewDetails :{
+    color: '$light',
+    alignItems: 'center',
+
+  },
+  viewBttn: {
+    padding: 10,
+    backgroundColor: '$extraDark',
+    borderRadius: 10,
+    width: '100%',
+    marginVertical: 10,
+    alignSelf: 'center',
   },
 });
