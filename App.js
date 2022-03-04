@@ -2,10 +2,12 @@ import React from 'react';
 import Product from './src/screens/Product';
 import {Appearance} from 'react-native';
 import {Provider} from 'react-redux';
-import store from './src/store';
+//import store from './src/store';
 import Navi from './src/navigation/Navi';
 import ProductCategories from './src/screens/ProductCategories';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import  {store, persistor} from './src/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const colorScheme = Appearance.getColorScheme();
 console.log('colorScheme', colorScheme);
@@ -36,7 +38,9 @@ if (colorScheme === 'light') {
 const App = () => {
   return (
     <Provider store={store}>
+    <PersistGate persistor={persistor}>
       <Navi />
+      </PersistGate>
     </Provider>
   );
 };
