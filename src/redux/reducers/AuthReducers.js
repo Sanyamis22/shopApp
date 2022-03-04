@@ -2,6 +2,7 @@ import {ActionTypes} from '../constants/productConstants';
 
 export const loginState = {
   isLogin: false,
+  isRegistered : false,
   userDetails: {},
 };
 
@@ -10,8 +11,13 @@ const AuthReducers = (state = loginState, action) => {
     case ActionTypes.LOGIN_USER_SUCCESS:
       return {...state, isLogin: true, userDetails: action.productData};
 
-    case ActionTypes.REGISTER_USER:
-      return {...state, isLogin: action.productData};
+    case ActionTypes.REGISTER_USER_SUCCESS:
+      return {...state, isRegistered : true };
+
+    case ActionTypes.LOGOUT:
+      return {...state, isLogin: false, isRegistered: false, userDetails: {}}
+
+
 
     default:
       return state;

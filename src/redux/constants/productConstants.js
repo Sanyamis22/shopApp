@@ -15,4 +15,6 @@ export const ActionTypes = {
   FETCH_CART : 'FETCH_CART',
   SET_CART : 'SET_CART',
   Liked : 'Liked',
+  REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS',
+  LOGOUT : 'LOGOUT',
 };

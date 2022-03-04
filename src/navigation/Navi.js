@@ -23,7 +23,7 @@ const Navi = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Register"
+        initialRouteName="Login1"
         screenOptions={{headerTitleAlign: 'center'}}>
         {isLogin ? (
           <>

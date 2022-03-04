@@ -10,6 +10,11 @@ import {
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {RegisterUser} from '../../redux/actions/authAction'
+import {useDispatch, useSelector} from 'react-redux';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { useEffect } from 'react';
+
 
 const validationSchema = Yup.object({
   name: Yup.string().required(),
@@ -24,6 +29,20 @@ const validationSchema = Yup.object({
 });
 
 const Register = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {isRegistered} = useSelector(state => state.Auth);
+  
+  useEffect(() => {
+    isRegistered ? navigation.navigate('Login1') : null;
+  }, [])
+  
+
+  const register = (value) => {
+    console.log('register=>',value)
+    dispatch(RegisterUser(value));
+
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}> REGISTER </Text>
@@ -38,7 +57,7 @@ const Register = ({navigation}) => {
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            console.log(values);
+            register(values);
           }}>
           {({
             handleChange,
@@ -55,7 +74,7 @@ const Register = ({navigation}) => {
                   source={require('./../../assets/email_2.png')}
                 />
                 <TextInput
-                  style={styles.inputcontainer}
+                  style={styles.input}
                   placeholder="Enter Name"
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
@@ -73,7 +92,7 @@ const Register = ({navigation}) => {
                 />
 
                 <TextInput
-                  style={styles.inputcontainer}
+                  style={styles.input}
                   placeholder="E-mail"
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
@@ -91,7 +110,7 @@ const Register = ({navigation}) => {
                 />
 
                 <TextInput
-                  style={styles.inputcontainer}
+                  style={styles.input}
                   placeholder="********"
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
@@ -109,7 +128,7 @@ const Register = ({navigation}) => {
                 />
 
                 <TextInput
-                  style={styles.inputcontainer}
+                  style={styles.input}
                   placeholder="********"
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
@@ -149,20 +168,21 @@ const Register = ({navigation}) => {
 
 export default Register;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor : '$light'
   },
   heading: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 70,
-    color: '#000',
+    color: '$extraDark',
   },
   bodycontainer: {
     flex: 0.9,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '$lightDark',
     marginTop: 'auto',
     marginBottom: 50,
     marginHorizontal: 30,
@@ -172,7 +192,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   inputcontainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '$light',
     flexDirection: 'row',
     marginHorizontal: 5,
     marginVertical: 5,
@@ -203,7 +223,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 15,
     marginTop: 10,
-    color: 'black',
+    color: '$extraDark',
   },
   formik: {
     marginTop: 50,

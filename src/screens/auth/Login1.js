@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import Button from '../../components/atom/button/Button';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -10,11 +11,13 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
-  Button,
+  
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import { LoginUser } from '../../redux/actions/authAction';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required!'),
@@ -93,7 +96,7 @@ const Login1 = ({navigation}) => {
                 ) : null}
               </View>
 
-              <Button title="Submit" color="maroon" onPress={handleSubmit} />
+              <Button text="SUBMIT"  onPress={handleSubmit} />
             </View>
           )}
         </Formik>
@@ -125,20 +128,21 @@ const Login1 = ({navigation}) => {
 
 export default Login1;
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor : '$light'
   },
   heading: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 70,
-    color: '#000',
+    color: '$extraDark',
   },
   bodycontainer: {
     flex: 0.9,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '$lightDark',
     marginTop: 'auto',
     marginBottom: 40,
     marginHorizontal: 30,
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   inputcontainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '$light',
     flexDirection: 'row',
     marginHorizontal: 5,
     marginVertical: 5,
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 15,
     marginTop: 10,
-    color: 'black',
+    color: '$extraDark',
   },
   logo: {
     //position: 'relative',
@@ -193,7 +197,7 @@ const styles = StyleSheet.create({
   word: {
     alignSelf: 'flex-end',
     fontWeight: 'bold',
-    color: 'black',
+    color: '$extraDark',
   },
   error: {
     fontSize: 12,
@@ -201,5 +205,6 @@ const styles = StyleSheet.create({
     color: 'red',
     marginHorizontal: 12,
     textAlign: 'right',
+    padding : 10,
   },
 });

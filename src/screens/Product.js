@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {SearchBar} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
@@ -16,35 +16,24 @@ import {fetchCategoryAction} from '../redux/actions/productCategorieAction';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ProductsCard from '../components/molecule/ProductsCard';
 
-
 const Product = ({navigation}) => {
   const dispatch = useDispatch();
   const {products, isFetching} = useSelector(state => state.products);
   const categories = useSelector(state => state.ProductCategories);
-  const [productsFromState, setData]= useState (products);
- 
+  const [productsFromState, setData] = useState(products);
 
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategoryAction());
-    
   }, []);
 
-  
-   
-  
-
- 
-
   const _renderCategoryItem = ({item}) => {
-    
     return (
       <View style={styles.mainContainer}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CategoryList', {
               categoryName: item,
-             
             })
           }>
           <Image style={styles.story} source={require('./../assets/tv.png')} />
@@ -56,16 +45,14 @@ const Product = ({navigation}) => {
     );
   };
 
-  const searchName = (input) => {
+  const searchName = input => {
     let products = productsFromState;
-    let searchData = products.filter((item) => {
-      return item.title.toLowerCase().includes(input.toLowerCase())
-
+    let searchData = products.filter(item => {
+      return item.title.toLowerCase().includes(input.toLowerCase());
     });
 
-  setData(searchData)
-
-  }
+    setData(searchData);
+  };
 
   const _renderLoader = () =>
     isFetching ? <ActivityIndicator size="large" color="#333" /> : null;
@@ -81,11 +68,10 @@ const Product = ({navigation}) => {
           style={styles.search}
           source={require('./../assets/search.png')}
         />
-        <TextInput 
-        placeholder="search here..." 
-          onChangeText={(input)=>{
-            searchName(input)
-
+        <TextInput
+          placeholder="search here..."
+          onChangeText={input => {
+            searchName(input);
           }}
         />
 
@@ -106,8 +92,6 @@ const Product = ({navigation}) => {
       </View>
       <View style={styles.addedCart}>
         <Text style={styles.heading}> Categories </Text>
-
-        
       </View>
 
       <FlatList
@@ -122,15 +106,13 @@ const Product = ({navigation}) => {
     </View>
   );
 
- 
-
   const _renderProductItem = ({item}) => {
     return <ProductsCard navigation={navigation} item={item} />;
   };
 
   return (
     <View style={styles.Container}>
-       <View></View>
+      <View></View>
       <View style={styles.productContainer}>
         <FlatList
           data={productsFromState}
@@ -266,11 +248,9 @@ const styles = EStyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
     marginLeft: 10,
-    flexDirection : 'row',
-    borderWidth : 2,
-    borderColor : '$lightDark',
-
-
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '$lightDark',
   },
   // SearchInput: {
   //   width: '100%',
@@ -279,11 +259,9 @@ const styles = EStyleSheet.create({
   //   fontSize: 16,
 
   // },
-  search : {
+  search: {
     width: 45,
     height: 45,
     marginTop: 3,
   },
 });
-
-

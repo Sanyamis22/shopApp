@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
+import { Logout } from '../../redux/actions/authAction';
 
 const Profile = ({navigation}) => {
+      const dispatch = useDispatch();
     const {userDetails} = useSelector(state => state.Auth);
+    
+    const logout = () => {
+      dispatch(Logout());
+    }
   return (
     <View style={styles.container}>
       <Text style={styles.heading}> PROFILE </Text>
@@ -16,7 +23,7 @@ const Profile = ({navigation}) => {
        
       <TouchableOpacity style={styles.logoutbtn}>
         <Text
-          onPress={() => navigation.navigate('Login1')}
+          onPress={() => (logout())}
           style={styles.logoutstyle}>
           LOGOUT
         </Text>

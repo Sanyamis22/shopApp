@@ -25,8 +25,9 @@ function* registerSaga(action) {
       'https://userauthenticationnode.herokuapp.com/api/users/',
       action.payload,
     );
+    console.log('data=>', data)
 
-    yield put({type: ActionTypes.REGISTER_USER, productData: data});
+    yield put({type: ActionTypes.REGISTER_USER_SUCCESS, productData: data});
   } catch (e) {
     console.log(e.message);
   }
