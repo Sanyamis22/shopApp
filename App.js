@@ -6,8 +6,10 @@ import {Provider} from 'react-redux';
 import Navi from './src/navigation/Navi';
 import ProductCategories from './src/screens/ProductCategories';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import  {store, persistor} from './src/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import {store, persistor} from './src/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import Splash from './src/screens/Splash';
+
 
 const colorScheme = Appearance.getColorScheme();
 console.log('colorScheme', colorScheme);
@@ -19,8 +21,8 @@ if (colorScheme === 'light') {
     $lightDark: '#A7C4BC',
     $light: '#DFEEEA',
     $Black: '#000000',
-    $White : '#FFFFFF',
-    $grey: '#999999'
+    $White: '#FFFFFF',
+    $grey: '#999999',
   });
 } else {
   EStyleSheet.build({
@@ -30,16 +32,17 @@ if (colorScheme === 'light') {
     $lightDark: '#301B3F',
     $light: '#151515',
     $Black: '#000000',
-    $White : '#FFFFFF',
-    $grey: '#999999'
+    $White: '#FFFFFF',
+    $grey: '#999999',
   });
 }
 
 const App = () => {
   return (
     <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      <Navi />
+      <PersistGate loading={<Splash />} persistor={persistor}
+      onBeforeLift={() => new Promise(resolve => setTimeout(resolve, 3000))}>
+        <Navi />
       </PersistGate>
     </Provider>
   );

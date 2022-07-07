@@ -15,12 +15,12 @@ import {fetchProducts} from '../redux/actions/productAction';
 import {fetchCategoryAction} from '../redux/actions/productCategorieAction';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ProductsCard from '../components/molecule/ProductsCard';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Product = ({navigation}) => {
   const dispatch = useDispatch();
   const {products, isFetching} = useSelector(state => state.products);
   const categories = useSelector(state => state.ProductCategories);
-  const [productsFromState, setData] = useState(products);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -45,49 +45,36 @@ const Product = ({navigation}) => {
     );
   };
 
-  const searchName = input => {
-    let products = productsFromState;
-    let searchData = products.filter(item => {
-      return item.title.toLowerCase().includes(input.toLowerCase());
-    });
-
-    setData(searchData);
-  };
+  
 
   const _renderLoader = () =>
     isFetching ? <ActivityIndicator size="large" color="#333" /> : null;
   const _renderHeader = () => (
     <View>
       <View style={styles.view}>
-        {/* <SearchBar
-            placeholder="Type Here..."
-            onChangeText={updateSearch}
-            value={search}
-          /> */}
-        <Image
-          style={styles.search}
-          source={require('./../assets/search.png')}
-        />
+        
+        
+        
         <TextInput
           placeholder="search here..."
           onChangeText={input => {
             searchName(input);
           }}
         />
+        <Icon style={styles.search} name="search1" size={28} color="black" />
 
         <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
-          <Image style={styles.fav} source={require('./../assets/fav.png')} />
+          <Icon style={styles.fav} name="hearto" size={28} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('AddtoCart')}>
-          <Image style={styles.bag} source={require('./../assets/bag.png')} />
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+        <Icon style={styles.bag} name="shoppingcart" size={30} color="black" />
+         
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Image
-            style={styles.Profile}
-            source={require('./../assets/profile.png')}
-          />
+        <Icon style={styles.Profile} name="profile" size={28} color="black" />
+          
         </TouchableOpacity>
       </View>
       <View style={styles.addedCart}>
@@ -115,7 +102,7 @@ const Product = ({navigation}) => {
       <View></View>
       <View style={styles.productContainer}>
         <FlatList
-          data={productsFromState}
+          data={products}
           numColumns={2}
           renderItem={_renderProductItem}
           keyExtractor={item => item.id}
@@ -221,8 +208,7 @@ const styles = EStyleSheet.create({
     marginVertical: 10,
   },
   Profile: {
-    width: 30,
-    height: 30,
+   padding : 3,
     marginTop: 7,
     //marginLeft: 100,
   },
@@ -230,15 +216,13 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
   },
   fav: {
-    width: 30,
-    height: 30,
+    padding: 3,
     marginTop: 7,
-    marginLeft: 140,
+    marginLeft: 30,
   },
   bag: {
-    width: 40,
-    height: 40,
-    //marginTop: 1,
+    marginTop: 5,
+    padding: 3,
   },
   view: {
     //margin: 10,
@@ -260,8 +244,8 @@ const styles = EStyleSheet.create({
 
   // },
   search: {
-    width: 45,
-    height: 45,
-    marginTop: 3,
+    padding: 3,
+    marginTop: 4,
+    marginLeft: 120,
   },
 });

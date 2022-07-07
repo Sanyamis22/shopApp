@@ -6,15 +6,21 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Button,
+  ScrollView,
+  Modal,
+
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {RegisterUser} from '../../redux/actions/authAction'
+import {RegisterUser} from '../../redux/actions/authAction';
 import {useDispatch, useSelector} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
+import Button from '../../components/atom/button/Button';
 
+import {useState} from 'react';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import {ActionTypes} from '../../redux/constants/productConstants';
 
 const validationSchema = Yup.object({
   name: Yup.string().required(),
@@ -30,138 +36,166 @@ const validationSchema = Yup.object({
 
 const Register = ({navigation}) => {
   const dispatch = useDispatch();
+
   const {isRegistered} = useSelector(state => state.Auth);
-  
-  useEffect(() => {
-    isRegistered ? navigation.navigate('Login1') : null;
-  }, [])
-  
 
-  const register = (value) => {
-    console.log('register=>',value)
+  const register = value => {
+    console.log('register=>', value);
     dispatch(RegisterUser(value));
+  };
 
-  }
+  const handleModalOkPress = () => {
+    navigation.navigate('Login1');
+    dispatch({type: ActionTypes.RESET_REGISER_STATE});
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}> REGISTER </Text>
-      <View style={styles.bodycontainer}>
-        <Formik
-          style={styles.formik}
-          initialValues={{
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={values => {
-            register(values);
-          }}>
-          {({
-            handleChange,
-            handleSubmit,
-            values,
-            handleBlur,
-            errors,
-            touched,
-          }) => (
-            <View>
-              <View style={styles.inputcontainer}>
-                <Image
-                  style={styles.msgbox}
-                  source={require('./../../assets/email_2.png')}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Name"
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                />
-                {errors.name && touched.name ? (
-                  <Text style={styles.error}>{errors.name}</Text>
-                ) : null}
-              </View>
-
-              <View style={styles.inputcontainer}>
-                <Image
-                  style={styles.msgbox}
-                  source={require('./../../assets/email_2.png')}
-                />
-
-                <TextInput
-                  style={styles.input}
-                  placeholder="E-mail"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-                {errors.email && touched.email ? (
-                  <Text style={styles.error}>{errors.email}</Text>
-                ) : null}
-              </View>
-
-              <View style={styles.inputcontainer}>
-                <Image
-                  style={styles.msgbox}
-                  source={require('./../../assets/email_2.png')}
-                />
-
-                <TextInput
-                  style={styles.input}
-                  placeholder="********"
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                />
-                {errors.password && touched.password ? (
-                  <Text style={styles.error}>{errors.password}</Text>
-                ) : null}
-              </View>
-
-              <View style={styles.inputcontainer}>
-                <Image
-                  style={styles.msgbox}
-                  source={require('./../../assets/email_2.png')}
-                />
-
-                <TextInput
-                  style={styles.input}
-                  placeholder="********"
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={handleBlur('confirmPassword')}
-                  value={values.confirmPassword}
-                />
-                {errors.confirmPassword && touched.confirmPassword ? (
-                  <Text style={styles.error}>{errors.confirmPassword}</Text>
-                ) : null}
-              </View>
-
-              <Button title="Submit" color="maroon" onPress={handleSubmit} />
+      {isRegistered ? (
+        <>
+          <Modal transparent={true}
+            visible={true}>
+            <View style={styles.popup}>
+              <Text style={styles.popup_txt}>
+                {' '}
+                Congratulations! You have successfully Registered.Please Login 
+              </Text>
+              
+              <TouchableOpacity>
+                <View>
+                  <Text onPress={handleModalOkPress} style={styles.popup_btn}>
+                    {' '}
+                    OK{' '}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          )}
-        </Formik>
+          </Modal>
+        </>
+      ) : 
+         null 
+      }
         
+          <Text style={styles.heading}> REGISTER </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Login1')}>
-          <Image
-            style={styles.tinyLogo}
-            source={require('./../../assets/next_1.png')}
-          />
-        </TouchableOpacity>
-        <Text style={styles.bottom}>
-          {' '}
-          Already have an account?{' '}
-          <Text
-            onPress={() => navigation.navigate('Login1')}
-            style={styles.bold}>
-            Login
-          </Text>{' '}
-          here{' '}
-        </Text>
-      </View>
+          <View style={styles.bodycontainer}>
+            <Formik
+              style={styles.formik}
+              initialValues={{
+                name: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+              }}
+              validationSchema={validationSchema}
+              onSubmit={values => {
+                register(values);
+              }}>
+              {({
+                handleChange,
+                handleSubmit,
+                values,
+                handleBlur,
+                errors,
+                touched,
+              }) => (
+                <View>
+                  <View style={styles.inputcontainer}>
+                    <Image
+                      style={styles.msgbox}
+                      source={require('./../../assets/email_2.png')}
+                    />
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Enter Name"
+                      onChangeText={handleChange('name')}
+                      onBlur={handleBlur('name')}
+                      value={values.name}
+                    />
+                    {errors.name && touched.name ? (
+                      <Text style={styles.error}>{errors.name}</Text>
+                    ) : null}
+                  </View>
+
+                  <View style={styles.inputcontainer}>
+                    <Image
+                      style={styles.msgbox}
+                      source={require('./../../assets/email_2.png')}
+                    />
+
+                    <TextInput
+                      style={styles.input}
+                      placeholder="E-mail"
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                    />
+                    {errors.email && touched.email ? (
+                      <Text style={styles.error}>{errors.email}</Text>
+                    ) : null}
+                  </View>
+
+                  <View style={styles.inputcontainer}>
+                    <Image
+                      style={styles.msgbox}
+                      source={require('./../../assets/email_2.png')}
+                    />
+
+                    <TextInput
+                      style={styles.input}
+                      placeholder="********"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                    {errors.password && touched.password ? (
+                      <Text style={styles.error}>{errors.password}</Text>
+                    ) : null}
+                  </View>
+
+                  <View style={styles.inputcontainer}>
+                    <Image
+                      style={styles.msgbox}
+                      source={require('./../../assets/email_2.png')}
+                    />
+
+                    <TextInput
+                      style={styles.input}
+                      placeholder="********"
+                      onChangeText={handleChange('confirmPassword')}
+                      onBlur={handleBlur('confirmPassword')}
+                      value={values.confirmPassword}
+                    />
+                    {errors.confirmPassword && touched.confirmPassword ? (
+                      <Text style={styles.error}>{errors.confirmPassword}</Text>
+                    ) : null}
+                  </View>
+
+                  <Button text="SUBMIT" color="maroon" onPress={handleSubmit} />
+                </View>
+              )}
+            </Formik>
+            
+
+            <TouchableOpacity onPress={() => navigation.navigate('Login1')}>
+              <Image
+                style={styles.tinyLogo}
+                source={require('./../../assets/next_1.png')}
+              />
+            </TouchableOpacity>
+            <Text style={styles.bottom}>
+              {' '}
+              Already have an account?{' '}
+              <Text
+                onPress={() => navigation.navigate('Login1')}
+                style={styles.bold}>
+                Login
+              </Text>{' '}
+              here{' '}
+            </Text>
+          </View>
+        
+      
     </View>
   );
 };
@@ -171,7 +205,7 @@ export default Register;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : '$light'
+    backgroundColor: '$light',
   },
   heading: {
     fontSize: 28,
@@ -234,5 +268,41 @@ const styles = EStyleSheet.create({
     color: 'red',
     marginHorizontal: 12,
     textAlign: 'right',
+  },
+  modalsyle: {
+    backgroundColor: 'white',
+    height: 100,
+    width: 300,
+  },
+  modalButton: {},
+  popup: {
+    flex : 0.15,
+    backgroundColor: '$White',
+    marginTop: 130,
+    //opacity: 0.7,
+    margin: 10,
+    borderRadius: 10,
+    height : 100,
+    width : 300,
+    justifyContent : 'center',
+    marginLeft : 50
+  },
+  popup_txt: {
+    margin: 10,
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '$extraDark',
+    textAlign: 'center',
+  },
+  popup_btn: {
+    textAlign: 'center',
+    color: '$White',
+    fontWeight: 'bold',
+    fontSize: 10,
+    padding: 10,
+    marginHorizontal: 120,
+    //marginBottom: 20,
+    borderRadius: 40,
+    backgroundColor: '$extraDark',
   },
 });

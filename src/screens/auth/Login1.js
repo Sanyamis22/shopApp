@@ -1,6 +1,11 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import Button from '../../components/atom/button/Button';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -11,13 +16,11 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
-  
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import { LoginUser } from '../../redux/actions/authAction';
+import {LoginUser} from '../../redux/actions/authAction';
 import EStyleSheet from 'react-native-extended-stylesheet';
-
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required!'),
@@ -31,20 +34,19 @@ const Login1 = ({navigation}) => {
   const dispatch = useDispatch();
   const {isLogin, userDetails} = useSelector(state => state.Auth);
 
-  const login = (value) => {
-    console.log('login=>',value)
+  const login = value => {
+    console.log('login=>', value);
     dispatch(LoginUser(value));
-  }
+  };
   return (
     <View style={styles.container}>
-    {console.log('userDetails=>',userDetails)}
+      {console.log('userDetails=>', userDetails)}
       <Text style={styles.heading}> LOGIN </Text>
       <View style={styles.bodycontainer}>
         <ImageBackground
           style={styles.logo}
           source={require('./../../assets/id-card.png')}
           resizeMode="cover"></ImageBackground>
-
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={validationSchema}
@@ -96,21 +98,26 @@ const Login1 = ({navigation}) => {
                 ) : null}
               </View>
 
-              <Button text="SUBMIT"  onPress={handleSubmit} />
+              <Button text="SUBMIT" onPress={handleSubmit} />
             </View>
           )}
         </Formik>
-
         {/* <TouchableOpacity onPress={() => navigation.navigate('Forgot_password')}> */}
         <Text style={styles.word}> forgot password</Text>
-        {/* </TouchableOpacity> */}
-
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <GoogleSigninButton
+          style={{width: 192, height: 48}}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+         // onPress={this._signIn}
+         
+        />
+        ;{/* </TouchableOpacity> */}
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Image
             style={styles.tinyLogo}
             source={require('./../../assets/next_1.png')}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.bottom}>
           {' '}
           Already have an account?{' '}
@@ -131,7 +138,7 @@ export default Login1;
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : '$light'
+    backgroundColor: '$light',
   },
   heading: {
     fontSize: 28,
@@ -205,6 +212,10 @@ const styles = EStyleSheet.create({
     color: 'red',
     marginHorizontal: 12,
     textAlign: 'right',
-    padding : 10,
+    padding: 10,
+  },
+  error: {
+    color: 'red',
+    marginLeft: 230,
   },
 });

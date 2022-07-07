@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import { Logout } from '../../redux/actions/authAction';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Button from '../../components/atom/button/Button';
 
 const Profile = ({navigation}) => {
       const dispatch = useDispatch();
@@ -18,8 +20,10 @@ const Profile = ({navigation}) => {
         style={styles.img}
         source={require('./../../assets/delivery-boy1.png')}
       />
+      <View style={styles.textcontainer}>
       <Text style={styles.bottom}>  Name : {userDetails.name} </Text>
       <Text style={styles.bottom}> E-mail : {userDetails.email}  </Text>
+      </View>
        
       <TouchableOpacity style={styles.logoutbtn}>
         <Text
@@ -34,47 +38,61 @@ const Profile = ({navigation}) => {
 
 export default Profile;
 
-const styles = StyleSheet.create({
-  container: {},
+const styles = EStyleSheet.create({
+  container: {
+    backgroundColor: '$light',
+    flex: 1,
+  },
   heading: {
-    fontSize: 28,
+    fontSize: 40,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 70,
-    color: '#000',
+    color: '$extraDark',
   },
   img: {
     alignSelf: 'center',
-    marginTop: 70,
+    marginTop: 100,
     borderRadius: 100,
     borderWidth: 1,
+    height : 170,
+    width : 170,
     // borderColor: 'black',
   },
   bottom: {
-    fontSize: 20,
+    fontSize: 25,
    // fontWeight: 'bold',
     textAlign: 'center',
     //marginTop: 110,
-    color: '#000',
+    color: '$extraDark',
     alignSelf: 'center',
+    //marginTop : 10
   },
   exit: {
     paddingHorizontal: 40,
     color: 'red',
   },
   logoutbtn: {
-    width: '40%',
+    width: '60%',
     borderRadius: 15,
-    height: 40,
+    height: 50,
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 50,
-    backgroundColor: '#D62828',
+    marginTop: 100,
+    backgroundColor: '$extraDark',
   },
   logoutstyle: {
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
+  
   },
+  textcontainer : {
+    marginTop : 50,
+    //backgroundColor : '$lightDark',
+    flex: 0.4,
+    fontSize : 20
+    
+  }
 });

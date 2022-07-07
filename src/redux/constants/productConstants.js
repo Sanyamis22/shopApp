@@ -17,4 +17,6 @@ export const ActionTypes = {
   Liked : 'Liked',
   REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS',
   LOGOUT : 'LOGOUT',
+  RESET_REGISER_STATE : 'RESET_REGISER_STATE',
+  ADD_TO_CART : 'ADD_TO_CART',
 };

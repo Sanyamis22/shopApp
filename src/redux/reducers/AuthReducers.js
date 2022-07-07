@@ -14,6 +14,9 @@ const AuthReducers = (state = loginState, action) => {
     case ActionTypes.REGISTER_USER_SUCCESS:
       return {...state, isRegistered : true };
 
+      case ActionTypes.RESET_REGISER_STATE:
+      return {...state, isRegistered:false};
+
     case ActionTypes.LOGOUT:
       return {...state, isLogin: false, isRegistered: false, userDetails: {}}
 

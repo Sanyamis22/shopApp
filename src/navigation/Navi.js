@@ -12,7 +12,7 @@ import CategoryList from '../screens/CategoryList';
 import Login1 from '../screens/auth/Login1';
 import Register from '../screens/auth/Register';
 import Profile from '../screens/auth/Profile';
-import AddtoCart from '../screens/AddtoCart';
+import Cart from '../screens/Cart';
 import Favorite from '../screens/Favorite';
 //import Forgot_password from '../screens/auth/Forgot_password';
 
@@ -60,8 +60,8 @@ const Navi = () => {
             />
 
             <Stack.Screen
-              name="AddtoCart"
-              component={AddtoCart}
+              name="Cart"
+              component={Cart}
               options={{
                 headerShown: false,
               }}
