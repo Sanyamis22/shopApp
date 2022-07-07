@@ -9,7 +9,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {store, persistor} from './src/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import Splash from './src/screens/Splash';
-
+import Login1 from './src/screens/auth/Login1';
+import Register from './src/screens/auth/Register';
 
 const colorScheme = Appearance.getColorScheme();
 console.log('colorScheme', colorScheme);
@@ -40,8 +41,10 @@ if (colorScheme === 'light') {
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={<Splash />} persistor={persistor}
-      onBeforeLift={() => new Promise(resolve => setTimeout(resolve, 3000))}>
+      <PersistGate
+        loading={<Splash />}
+        persistor={persistor}
+        onBeforeLift={() => new Promise(resolve => setTimeout(resolve, 3000))}>
         <Navi />
       </PersistGate>
     </Provider>

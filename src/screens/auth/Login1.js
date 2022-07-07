@@ -1,11 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import Button from '../../components/atom/button/Button';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -104,20 +99,7 @@ const Login1 = ({navigation}) => {
         </Formik>
         {/* <TouchableOpacity onPress={() => navigation.navigate('Forgot_password')}> */}
         <Text style={styles.word}> forgot password</Text>
-        <GoogleSigninButton
-          style={{width: 192, height: 48}}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-         // onPress={this._signIn}
-         
-        />
-        ;{/* </TouchableOpacity> */}
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Image
-            style={styles.tinyLogo}
-            source={require('./../../assets/next_1.png')}
-          />
-        </TouchableOpacity> */}
+
         <Text style={styles.bottom}>
           {' '}
           Already have an account?{' '}
@@ -213,9 +195,5 @@ const styles = EStyleSheet.create({
     marginHorizontal: 12,
     textAlign: 'right',
     padding: 10,
-  },
-  error: {
-    color: 'red',
-    marginLeft: 230,
   },
 });
