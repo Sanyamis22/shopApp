@@ -1,44 +1,39 @@
 import {
-  StyleSheet,
   Text,
   View,
   Image,
   FlatList,
-  Pressable,
   ActivityIndicator,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {SearchBar} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {fetchProducts} from '../redux/actions/productAction';
 import {fetchCategoryAction} from '../redux/actions/productCategorieAction';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ProductsCard from '../components/molecule/ProductsCard';
-//import {fetchCategoryList} from '../redux/actions/CategoryListAction';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Product = ({navigation}) => {
   const dispatch = useDispatch();
   const {products, isFetching} = useSelector(state => state.products);
   const categories = useSelector(state => state.ProductCategories);
-  //const categoryType = useSelector(state => state.CategoryList)
 
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategoryAction());
-    //dispatch(fetchCategoryList());
   }, []);
 
   const _renderCategoryItem = ({item}) => {
-    //console.log('data => ', data)
     return (
       <View style={styles.mainContainer}>
-       
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CategoryList', {
               categoryName: item,
-              // categoryType : item
             })
           }>
           <Image style={styles.story} source={require('./../assets/tv.png')} />
@@ -50,23 +45,48 @@ const Product = ({navigation}) => {
     );
   };
 
+  
+
   const _renderLoader = () =>
     isFetching ? <ActivityIndicator size="large" color="#333" /> : null;
   const _renderHeader = () => (
     <View>
-    
-      <View style={styles.addedCart}>
-      <Text style={styles.heading}> Categories </Text>
-      <Image style={styles.bag} source={require('./../assets/bag.png')} />
+      <View style={styles.view}>
+        
+        
+        
+        <TextInput
+          placeholder="search here..."
+          onChangeText={input => {
+            searchName(input);
+          }}
+        />
+        <Icon style={styles.search} name="search1" size={28} color="black" />
+
+        <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
+          <Icon style={styles.fav} name="hearto" size={28} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+        <Icon style={styles.bag} name="shoppingcart" size={30} color="black" />
+         
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <Icon style={styles.Profile} name="profile" size={28} color="black" />
+          
+        </TouchableOpacity>
       </View>
-      
+      <View style={styles.addedCart}>
+        <Text style={styles.heading}> Categories </Text>
+      </View>
+
       <FlatList
         horizontal
         pagingEnabled={false}
         showsHorizontalScrollIndicator={false}
         data={categories}
         renderItem={_renderCategoryItem}
-
         keyExtractor={data => data}
       />
       <Text style={styles.heading}> Product </Text>
@@ -79,6 +99,7 @@ const Product = ({navigation}) => {
 
   return (
     <View style={styles.Container}>
+      <View></View>
       <View style={styles.productContainer}>
         <FlatList
           data={products}
@@ -93,6 +114,8 @@ const Product = ({navigation}) => {
     </View>
   );
 };
+
+export default Product;
 
 const styles = EStyleSheet.create({
   mainContainer: {
@@ -184,15 +207,45 @@ const styles = EStyleSheet.create({
     width: '100%',
     marginVertical: 10,
   },
-  bag : {
-    width: 45,
-    height: 45,
-    marginTop : 1,
-    marginLeft : 180,
+  Profile: {
+   padding : 3,
+    marginTop: 7,
+    //marginLeft: 100,
   },
   addedCart: {
-    flexDirection :'row',
-  }
-});
+    flexDirection: 'row',
+  },
+  fav: {
+    padding: 3,
+    marginTop: 7,
+    marginLeft: 30,
+  },
+  bag: {
+    marginTop: 5,
+    padding: 3,
+  },
+  view: {
+    //margin: 10,
+    width: '65%',
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginTop: 20,
+    marginLeft: 10,
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '$lightDark',
+  },
+  // SearchInput: {
+  //   width: '100%',
+  //   height: '100%',
+  //   paddingLeft: 8,
+  //   fontSize: 16,
 
-export default Product;
+  // },
+  search: {
+    padding: 3,
+    marginTop: 4,
+    marginLeft: 120,
+  },
+});
